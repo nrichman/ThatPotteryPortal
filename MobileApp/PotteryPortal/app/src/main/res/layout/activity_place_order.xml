@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+tools:context="com.pottery.christy.potteryportal.PlaceOrder">
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:id="@+id/InnerLayout"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/editText2">
+
+    </RelativeLayout>
+
+<Button
+    android:id="@+id/button"
+    android:layout_width="150dp"
+    android:layout_height="60dp"
+    android:layout_alignParentLeft="true"
+    android:layout_alignParentStart="true"
+    android:layout_below="@+id/InnerLayout"
+    android:layout_marginTop="50dp"
+    android:onClick="dispatchTakePictureIntent"
+    android:text="Add Item" />
+<!--android:onClick="dispatchTakePictureIntent"-->
+
+<TextView
+    android:id="@+id/textView2"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_alignBaseline="@+id/editText"
+    android:layout_alignBottom="@+id/editText"
+    android:layout_alignParentLeft="true"
+    android:layout_alignParentStart="true"
+    android:text="Customer Name"
+    android:textSize="18sp" />
+
+<EditText
+    android:id="@+id/editText"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:layout_below="@id/textView"
+    android:layout_toRightOf="@id/textView2"
+    android:layout_marginTop="30dp"
+    >
+    <requestFocus />
+</EditText>
+
+<TextView
+    android:id="@+id/textView3"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_alignBaseline="@+id/editText2"
+    android:layout_alignBottom="@+id/editText2"
+    android:layout_alignParentLeft="true"
+    android:layout_alignParentStart="true"
+    android:text="Customer Phone"
+    android:textSize="18sp" />
+
+<EditText
+    android:id="@+id/editText2"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_centerHorizontal="true"
+    android:layout_below="@id/editText"
+    android:layout_toRightOf="@id/textView3"
+    >
+</EditText>
+
+<TextView
+    android:id="@+id/totalItems"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="Total Items:"
+    android:layout_below="@id/textView3"
+    android:layout_centerHorizontal="true"
+    android:layout_marginTop="20dp"
+    android:textSize="20sp"
+    />
+<TextView
+    android:id="@+id/itemCount"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="0"
+    android:layout_below="@id/textView3"
+    android:layout_toRightOf="@id/totalItems"
+    android:layout_marginTop="20dp"
+    android:textSize="20sp"
+    />
+
+<Button
+    android:id="@+id/button3"
+    android:layout_width="270dp"
+    android:layout_height="65dp"
+    android:text="Submit"
+    android:layout_centerHorizontal="true"
+    android:layout_alignParentBottom="true"
+    android:onClick="gotoMainActivity"
+    android:layout_marginBottom="25dp"
+    />
+
+<TextView
+    android:id="@+id/textView"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_centerHorizontal="true"
+    android:text="Place an Order"
+    android:textSize="30sp"
+    android:layout_marginTop="25dp"/>
+</RelativeLayout>

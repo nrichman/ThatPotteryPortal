@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.pottery.christy.potteryportal.MainActivity">
+
+    <Button
+        android:id="@+id/button2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:onClick="launchActivity"
+        android:text="Enter New Order"
+        android:layout_marginBottom="45dp"/>
+
+    <TextView
+        android:id="@+id/editText3"
+        android:layout_width="240dp"
+        android:layout_centerHorizontal="true"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="179dp"
+        android:ems="10"
+        android:text="That Pottery Portal"
+        android:textSize="26dp" />
+
+</RelativeLayout>
