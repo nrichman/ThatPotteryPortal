@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+.content {
+    margin: auto;
+}
+table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 80%;
+}
+
+td, th {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+}
+
+tr:nth-child(even) {
+    background-color: #dddddd;
+}
+</style>
+</head>
+<body>
+
+<h2>That Pottery Portal :D</h2>
+
+<table>
+  <tr>
+    <th>Name</th>
+    <th>Owner</th>
+    <th>Timestamp</th>
+    <th>Image</th>
+  </tr>
+  {% for row in data %}
+  <tr>
+    <td>{{ row[0] }}</td>
+    <td>{{ row[1] }}</td>
+    <td>{{ row[2] }}</td>
+    <td><img src="{{ row[3] }}" height="300" width="300"></td>
+  </tr>
+  {% endfor %}
+</table>
+
+</body>
+</html>
