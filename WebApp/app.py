@@ -12,6 +12,17 @@ db = MySQLdb.connect(host="pottery-db.c30pytquwht8.us-east-2.rds.amazonaws.com",
                      passwd="jenkinspottery",
                      db="pottery_data")
 
+@app.route('/test_write', methods=['POST'])
+def test_write():
+    data = request.get_json(force=True)
+    cur = db.cursor()
+
+    word = data['word']
+
+    add_word = "INSERT INTO words VALUES (%s)"
+    cur.execute(add_word, [word])
+    db.commit()
+    return 'Nice'
 
 @app.route('/insert_order', methods=['POST'])
 def insert_order():
