@@ -2,9 +2,11 @@ from flask import Flask
 from flask import render_template
 from flask import jsonify
 from flask import request
+from flask_cors import CORS
 import MySQLdb
 
 app = Flask(__name__)
+CORS(app)
 
 db = MySQLdb.connect(host="pottery-db.c30pytquwht8.us-east-2.rds.amazonaws.com",
                      port=7070,
@@ -14,6 +16,8 @@ db = MySQLdb.connect(host="pottery-db.c30pytquwht8.us-east-2.rds.amazonaws.com",
 
 @app.route('/test_write', methods=['POST'])
 def test_write():
+    """Inserts a single word to test table in DB
+    """
     data = request.get_json(force=True)
     cur = db.cursor()
 
@@ -26,6 +30,8 @@ def test_write():
 
 @app.route('/insert_order', methods=['POST'])
 def insert_order():
+    """Inserts an entire JSON order into DB
+    """
     data = request.get_json(force=True)
     cur = db.cursor()
 
@@ -46,6 +52,8 @@ def insert_order():
 
 @app.route('/get_orders', methods=['GET'])
 def get_orders():
+    """Gets all orders from the DB
+    """
     cur = db.cursor()
     cur.execute("SELECT * FROM orders")
     data = []
