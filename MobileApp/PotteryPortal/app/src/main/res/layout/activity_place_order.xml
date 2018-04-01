@@ -109,4 +109,14 @@ tools:context="com.pottery.christy.potteryportal.PlaceOrder">
     android:text="Place an Order"
     android:textSize="30sp"
     android:layout_marginTop="25dp"/>
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/button3"
+        android:layout_marginBottom="11dp"
+        android:layout_toEndOf="@+id/button3"
+        android:layout_toRightOf="@+id/button3"
+        app:srcCompat="@mipmap/ic_launcher" />
 </RelativeLayout>
