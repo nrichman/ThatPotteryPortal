@@ -49,6 +49,11 @@ def insert_order():
     db.commit()
     return 'Nice'
 
+@app.route('/get_image', methods=['POST'])
+def get_image():
+    data = request.get_json(force=True)
+    image = data['image']
+    return 'Nice'
 
 @app.route('/get_orders', methods=['GET'])
 def get_orders():
