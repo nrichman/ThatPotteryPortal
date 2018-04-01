@@ -4,6 +4,8 @@ from flask import jsonify
 from flask import request
 from flask_cors import CORS
 import MySQLdb
+import cloudinary
+import cloudinary.uploader
 
 app = Flask(__name__)
 CORS(app)
@@ -53,7 +55,8 @@ def insert_order():
 def get_image():
     data = request.get_json(force=True)
     image = data['image']
-    return 'Nice'
+    result = cloudinary.uploader.upload(image)
+    return result
 
 @app.route('/get_orders', methods=['GET'])
 def get_orders():
