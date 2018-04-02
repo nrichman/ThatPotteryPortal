@@ -79,6 +79,13 @@ def get_orders():
     return jsonify({'orders': data})
     #return render_template('home.html', data=data)
 
+@app.route('/get_order_num', methods=['GET'])
+def get_order_num():
+    cur = db.cursor()
+    cur.execute("SELECT * FROM order_num")
+    data = cur.fetchall()[0][0]
+    cur.execute("UPDATE order_num SET num=" + str(data + 1))
+    return jsonify({'order_num': data})
 
 if __name__ == '__main__':
     app.run(debug=True)
