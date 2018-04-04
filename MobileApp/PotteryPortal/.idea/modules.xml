@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/PotteryPortal.iml" filepath="$PROJECT_DIR$/PotteryPortal.iml" />
+      <module fileurl="file://$PROJECT_DIR$/PotteryPortal_tensorflow.iml" filepath="$PROJECT_DIR$/PotteryPortal_tensorflow.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>
