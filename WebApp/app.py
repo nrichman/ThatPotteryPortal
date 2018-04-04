@@ -44,8 +44,9 @@ def insert_order():
     order_notes = data['notes']
     order_num_items = data['num_items']    
     order_items = data['order_items']
-    add_word = "INSERT INTO order_data VALUES (%s, %s, %s, %s, %s, %s, %s, %s, NOW())"
-    cur.execute(add_word, [order_number, order_name, order_phone, order_email, order_notes, order_items, 'FIRE', 'None'])
+
+    add_word = "INSERT INTO order_data VALUES (%s, %s, %s, %s, %s, %s, %s, NOW(), %s)"
+    cur.execute(add_word, [order_number, order_name, order_phone, order_email, order_notes, 'STATUS', 'None', order_num_items])
     db.commit()
 
     for item in order_items.split(',')[1:]:
