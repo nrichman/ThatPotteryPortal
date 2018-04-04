@@ -203,7 +203,7 @@
                   <td>{{item['status']}}</td>
                   <td>
                     {% for item2 in item['urls'] %}
-                      <img src={{item2}}>
+                      <img src={{item2}} title={{item['items'][loop.index0]}}>
                     {% endfor %}
                   </td>
                   <td>{{item['timestamp']}}</td>

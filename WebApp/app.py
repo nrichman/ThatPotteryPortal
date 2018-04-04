@@ -129,8 +129,15 @@ def home_page():
         })
 
         data[-1].setdefault('urls', [])
+        data[-1].setdefault('items', [])
+
         for num in range(1,int(num_items)+1):
             data[-1]['urls'].append('http://res.cloudinary.com/du0tdfvpl/order_' + str(number) + '_' + str(num))
+        cur2 = db.cursor()
+        cur2.execute('SELECT * FROM order_items WHERE order_num=' + number)
+        for row in cur2.fetchall():
+            a, b = row
+            data[-1]['items'].append(b)
     return render_template('home.html', data=data)
 
 if __name__ == '__main__':
