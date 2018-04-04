@@ -4,6 +4,8 @@ from flask import jsonify
 from flask import request
 from flask_cors import CORS
 import MySQLdb
+import cloudinary
+import cloudinary.uploader
 
 app = Flask(__name__)
 CORS(app)
@@ -35,20 +37,38 @@ def insert_order():
     data = request.get_json(force=True)
     cur = db.cursor()
 
-    order_number = data['number']
+    order_number = data['order_num']
     order_name = data['name']
     order_phone = data['phone']
     order_email = data['email']
-    #order_timestamp = data['timestamp']
     order_notes = data['notes']
-    order_status = data['status']
+    order_items = data['num_items']    
 
-
-    add_word = "INSERT INTO orders VALUES (%s, %s, %s, %s, NOW(), %s, %s)"
-    cur.execute(add_word, [order_number, order_name, order_phone, order_email, order_notes, order_status])
+    add_word = "INSERT INTO order_data VALUES (%s, %s, %s, %s, %s, %s, %s, %s, NOW())"
+    cur.execute(add_word, [order_number, order_name, order_phone, order_email, order_notes, order_items, 'FIRE', 'None'])
     db.commit()
     return 'Nice'
 
+@app.route('/insert_items', methods=['POST'])
+def insert_items():
+    data = request.get_json(force=True)
+    cur = db.cursor()
+
+    order_number = data['order_num']
+    order_items = data['order_items']
+
+    for item in order_items.split(','):
+        add_item = "INSERT INTO order_items VALUES (%s, %s)"
+        cur.execute(add_item, [order_number, item])
+        db.commit()
+    return 'Nice'
+
+@app.route('/get_image', methods=['POST'])
+def get_image():
+    data = request.get_json(force=True)
+    image = data['image']
+    result = cloudinary.uploader.upload(image)
+    return result
 
 @app.route('/get_orders', methods=['GET'])
 def get_orders():
@@ -71,6 +91,16 @@ def get_orders():
     return jsonify({'orders': data})
     #return render_template('home.html', data=data)
 
+@app.route('/get_order_num', methods=['GET'])
+def get_order_num():
+    print 'yo'
+    cur = db.cursor()
+    cur.execute("SELECT * FROM order_num")
+    db.commit()
+    data = cur.fetchall()[0][0]
+    cur.execute("UPDATE order_num SET num=" + str(data + 1))
+    db.commit()
+    return str(data)
 
 if __name__ == '__main__':
     app.run(debug=True)

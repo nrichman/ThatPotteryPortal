@@ -44,4 +44,4 @@ dependencies {
     testCompile 'junit:junit:4.12'
     compile 'org.tensorflow:tensorflow-android:+'
     compile 'com.wonderkiln:camerakit:0.13.1'
-}
+
