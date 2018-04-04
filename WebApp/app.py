@@ -81,18 +81,20 @@ def get_orders():
     """Gets all orders from the DB
     """
     cur = db.cursor()
-    cur.execute("SELECT * FROM orders")
+    cur.execute("SELECT * FROM order_data")
     data = []
     for row in cur.fetchall():
-        number, name, phone, email, timestamp, notes, status = row
+        number, name, phone, email, notes, status, order_type, timestamp, num_items = row
         data.append({
             'number': number,
             'name': name,
-            'phone': str(phone),
+            'phone': phone,
             'email': email,
+            'notes' : notes,
+            'status' : status,
+            'order_type' : order_type,
             'timestamp': str(timestamp),
-            'notes': notes,
-            'status': status
+            'num_items': num_items,
         })
     return jsonify({'orders': data})
     #return render_template('home.html', data=data)
@@ -106,6 +108,30 @@ def get_order_num():
     cur.execute("UPDATE order_num SET num=" + str(data + 1))
     db.commit()
     return str(data)
+
+@app.route('/')
+def home_page():
+    cur = db.cursor()
+    cur.execute("SELECT * FROM order_data")
+    data = []
+    for row in cur.fetchall():
+        number, name, phone, email, notes, status, order_type, timestamp, num_items = row
+        data.append({
+            'number': number,
+            'name': name,
+            'phone': phone,
+            'email': email,
+            'notes' : notes,
+            'status' : status,
+            'order_type' : order_type,
+            'timestamp': str(timestamp),
+            'num_items': num_items,
+        })
+
+        data[-1].setdefault('urls', [])
+        for num in range(1,int(num_items)+1):
+            data[-1]['urls'].append('http://res.cloudinary.com/du0tdfvpl/order_' + str(number) + '_' + str(num))
+    return render_template('home.html', data=data)
 
 if __name__ == '__main__':
     app.run(debug=True)
