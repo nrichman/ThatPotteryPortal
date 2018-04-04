@@ -48,7 +48,7 @@ def insert_order():
     cur.execute(add_word, [order_number, order_name, order_phone, order_email, order_notes, order_items, 'FIRE', 'None'])
     db.commit()
 
-    for item in order_items.split(','):
+    for item in order_items.split(',')[1:]:
         add_item = "INSERT INTO order_items VALUES (%s, %s)"
         cur.execute(add_item, [order_number, item])
         db.commit()
