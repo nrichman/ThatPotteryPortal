@@ -13,18 +13,32 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
+        android:layout_marginBottom="45dp"
         android:onClick="launchActivity"
-        android:text="Enter New Order"
-        android:layout_marginBottom="45dp"/>
+        android:text="Enter New Order" />
 
     <TextView
         android:id="@+id/editText3"
-        android:layout_width="240dp"
-        android:layout_centerHorizontal="true"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="179dp"
-        android:ems="10"
+        android:layout_below="@+id/imageView"
+        android:layout_marginLeft="31dp"
+        android:layout_marginStart="31dp"
+        android:ems="15"
+        android:fontFamily="sans-serif-smallcaps"
         android:text="That Pottery Portal"
-        android:textSize="26dp" />
+        android:textSize="30sp"
+        android:textStyle="bold" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginBottom="60dp"
+        android:layout_marginTop="20dp"
+        app:srcCompat="@drawable/potteryclipart" />
 
 </RelativeLayout>
