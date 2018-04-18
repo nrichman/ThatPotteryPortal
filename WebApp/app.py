@@ -9,6 +9,8 @@ import cloudinary
 import cloudinary.uploader
 
 app = Flask(__name__)
+app.secret_key = '04957832904375894370ifdsj84mec4wfpcj43ewi89'
+
 CORS(app)
 login_manager = LoginManager()
 login_manager.init_app(app)
@@ -191,7 +193,6 @@ def logout():
     return redirect('/login')
 
 if __name__ == '__main__':
-    app.secret_key = '04957832904375894370ifdsj84mec4wfpcj43ewi89'
     app.config['SESSION_TYPE'] = 'filesystem'
     app.debug = True
     app.run(debug=True)
