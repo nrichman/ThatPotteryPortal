@@ -286,7 +286,7 @@ public class PlaceOrder extends AppCompatActivity {
         queue.add(stringRequest);
 
         // END - DISPLAY MESSAGE TO USER
-        Toast.makeText(getApplicationContext(),"FINISHED UPLOAD",Toast.LENGTH_SHORT).show();
+
 
 //        // CUSTOMER NAME
 //        EditText mEdit;
@@ -371,6 +371,10 @@ public class PlaceOrder extends AppCompatActivity {
 //        Log.d("CUSTOMER NAME", mEdit2.getText().toString());
 
         Log.d("SEND ORDER", "SENDING ORDER DATA TO PYTHON SCRIPT");
+        String allItemNames = "";
+                for (int i = 0; i < allEds.size(); i++) {
+            allItemNames = allItemNames + "," + allEds.get(i).getText().toString();
+        }
 
         RequestQueue queue = Volley.newRequestQueue(this);
         Map<String, String> postParam= new HashMap<String, String>();
@@ -381,6 +385,15 @@ public class PlaceOrder extends AppCompatActivity {
         postParam.put("email", "christytest@test.com");
         postParam.put("notes", "Test Notes here");
         postParam.put("num_items", Integer.toString(numberOfItems));
+        postParam.put("order_items", allItemNames);
+
+        Log.d("ORDER_NUM",orderNumber );
+        Log.d("name",mEdit.getText().toString() );
+        Log.d("phone",mEdit2.getText().toString() );
+        Log.d("email","christytest@test.com" );
+        Log.d("notes","Test Notes here" );
+        Log.d("num_items",Integer.toString(numberOfItems) );
+        Log.d("order_items",allItemNames );
 
 //        postParam.put("image", testBitmap);
         JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.POST,
@@ -389,11 +402,17 @@ public class PlaceOrder extends AppCompatActivity {
                     @Override
                     public void onResponse(JSONObject response) {
                         Log.d("ORDER GOOD RESPONSE:", response.toString());
+                        Toast.makeText(getApplicationContext(),"FINISHED UPLOAD",Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                        startActivity(intent);
                     }
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.d("ORDER ERROR RESPONSE:", "Error: " + error.getMessage());
+                Toast.makeText(getApplicationContext(),"FINISHED UPLOAD",Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                startActivity(intent);
             }
         }) {
             /**
