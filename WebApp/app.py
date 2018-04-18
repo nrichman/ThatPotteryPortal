@@ -53,7 +53,7 @@ def insert_order():
         add_item = "INSERT INTO order_items VALUES (%s, %s)"
         cur.execute(add_item, [order_number, item])
         db.commit()
-    return 'Nice'
+    return {'response': 'Nice'}, 200
 
 @app.route('/insert_items', methods=['POST'])
 def insert_items():

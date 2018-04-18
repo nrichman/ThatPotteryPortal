@@ -18,7 +18,7 @@
   <link href="../static/css/sb-admin.css" rel="stylesheet">
 </head>
 
-<body class="fixed-nav sticky-footer bg-dark" id="page-top">
+<body class="fixed-nav sticky-footer bg-dark sidenav-toggled" id="page-top">
   <!-- Navigation-->
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" id="mainNav">
     <a class="navbar-brand" href="index.html">That Pottery Portal</a>
@@ -117,13 +117,6 @@
           </a>
         </li>
       </ul>
-      <ul class="navbar-nav sidenav-toggler">
-        <li class="nav-item">
-          <a class="nav-link text-center" id="sidenavToggler">
-            <i class="fa fa-fw fa-angle-left"></i>
-          </a>
-        </li>
-      </ul>
       <ul class="navbar-nav ml-auto">
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle mr-lg-2" id="alertsDropdown" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -203,7 +196,7 @@
                   <td>{{item['status']}}</td>
                   <td>
                     {% for item2 in item['urls'] %}
-                      <img src={{item2}} title={{item['items'][loop.index0]}}>
+                      <a href="{{item2}}" class="preview"><img src={{item2}} title="{{item['items'][loop.index0]}}" style="width:50px;height:75px"></a>
                     {% endfor %}
                   </td>
                   <td>{{item['timestamp']}}</td>
