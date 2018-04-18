@@ -1,20 +1,38 @@
 from flask import Flask
+from flask import Response
 from flask import render_template
-from flask import jsonify
-from flask import request
+from flask import request, redirect, jsonify
 from flask_cors import CORS
+from flask_login import LoginManager, UserMixin, login_required, login_user, logout_user
 import MySQLdb
 import cloudinary
 import cloudinary.uploader
 
 app = Flask(__name__)
 CORS(app)
+login_manager = LoginManager()
+login_manager.init_app(app)
 
 db = MySQLdb.connect(host="pottery-db.c30pytquwht8.us-east-2.rds.amazonaws.com",
                      port=7070,
                      user="team10",
                      passwd="jenkinspottery",
                      db="pottery_data")
+
+class User(UserMixin):
+
+    def __init__(self, id):
+        self.id = id
+        self.name = "user" + str(id)
+        self.password = self.name + "_secret"
+        
+    def __repr__(self):
+        return "%d/%s/%s" % (self.id, self.name, self.password)
+
+@login_manager.user_loader
+def load_user(user_id):
+    return User(user_id)
+
 
 @app.route('/test_write', methods=['POST'])
 def test_write():
@@ -109,7 +127,12 @@ def get_order_num():
     db.commit()
     return str(data)
 
+@login_manager.unauthorized_handler
+def unauthorized_callback():
+    return redirect('/login')
+
 @app.route('/')
+@login_required
 def home_page():
     cur = db.cursor()
     cur.execute("SELECT * FROM order_data")
@@ -140,5 +163,35 @@ def home_page():
             data[-1]['items'].append(b)
     return render_template('home.html', data=data)
 
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']        
+        if password == username + "_secret":
+            id = 1
+            user = User(id)
+            login_user(user)
+            return redirect('/')
+        else:
+            return abort(401)
+    else:
+        return Response('''
+        <form action="" method="post">
+            <p><input type=text name=username>
+            <p><input type=password name=password>
+            <p><input type=submit value=Login>
+        </form>
+        ''')
+
+@app.route("/logout")
+@login_required
+def logout():
+    logout_user()
+    return redirect('/login')
+
 if __name__ == '__main__':
+    app.secret_key = '04957832904375894370ifdsj84mec4wfpcj43ewi89'
+    app.config['SESSION_TYPE'] = 'filesystem'
+    app.debug = True
     app.run(debug=True)
