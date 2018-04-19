@@ -178,13 +178,7 @@ def login():
         else:
             return abort(401)
     else:
-        return render_template('''
-        <form action="" method="post">
-            <p><input type=text name=username>
-            <p><input type=password name=password>
-            <p><input type=submit value=Login>
-        </form>
-        ''')
+        return render_template('login.html')
 
 @app.route("/logout")
 @login_required
