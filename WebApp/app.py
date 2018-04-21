@@ -177,11 +177,11 @@ def login():
         for row in cur.fetchall():
             username_db, password_db = row
 
-        if username == username_db and str(hash(password)) == password_db:
-            id = 1
-            user = User(id)
-            login_user(user)
-            return redirect('/')
+            if username == username_db and str(hash(password)) == password_db:
+                id = 1
+                user = User(id)
+                login_user(user)
+                return redirect('/')
         else:
             return redirect('/login')
     else:
