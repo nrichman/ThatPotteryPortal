@@ -169,14 +169,21 @@ def home_page():
 def login():
     if request.method == 'POST':
         username = request.form['username']
-        password = request.form['password']        
-        if password == username + "_secret":
+        password = request.form['password']
+
+        cur = db.cursor()
+        cur.execute("SELECT * FROM users")
+        data = []
+        for row in cur.fetchall():
+            username_db, password_db = row
+
+        if username == username_db and str(hash(password)) == password_db:
             id = 1
             user = User(id)
             login_user(user)
             return redirect('/')
         else:
-            return abort(401)
+            return redirect('/login')
     else:
         return render_template('login.html')
 
