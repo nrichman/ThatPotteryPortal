@@ -7,6 +7,7 @@ from flask_login import LoginManager, UserMixin, login_required, login_user, log
 import MySQLdb
 import cloudinary
 import cloudinary.uploader
+import hashlib
 
 app = Flask(__name__)
 app.secret_key = '04957832904375894370ifdsj84mec4wfpcj43ewi89'
@@ -172,12 +173,12 @@ def login():
         password = request.form['password']
 
         cur = db.cursor()
-        cur.execute("SELECT * FROM users")
+        cur.execute("SELECT * FROM good_users")
         data = []
         for row in cur.fetchall():
             username_db, password_db = row
 
-            if username == username_db and str(hash(password)) == password_db:
+            if username == username_db and hashlib.sha224(password).hexdigest() == password_db:
                 id = 1
                 user = User(id)
                 login_user(user)
