@@ -32,24 +32,13 @@ class User(UserMixin):
     def __repr__(self):
         return "%d/%s/%s" % (self.id, self.name, self.password)
 
+
 @login_manager.user_loader
 def load_user(user_id):
+    """Loads the user for flask login
+    """
     return User(user_id)
 
-
-@app.route('/test_write', methods=['POST'])
-def test_write():
-    """Inserts a single word to test table in DB
-    """
-    data = request.get_json(force=True)
-    cur = db.cursor()
-
-    word = data['word']
-
-    add_word = "INSERT INTO words VALUES (%s)"
-    cur.execute(add_word, [word])
-    db.commit()
-    return 'Nice'
 
 @app.route('/insert_order', methods=['POST'])
 def insert_order():
@@ -76,52 +65,11 @@ def insert_order():
         db.commit()
     return {'response': 'Nice'}, 200
 
-@app.route('/insert_items', methods=['POST'])
-def insert_items():
-    data = request.get_json(force=True)
-    cur = db.cursor()
-
-    order_number = data['order_num']
-    order_items = data['order_items']
-
-    for item in order_items.split(','):
-        add_item = "INSERT INTO order_items VALUES (%s, %s)"
-        cur.execute(add_item, [order_number, item])
-        db.commit()
-    return 'Nice'
-
-@app.route('/get_image', methods=['POST'])
-def get_image():
-    data = request.get_json(force=True)
-    image = data['image']
-    result = cloudinary.uploader.upload(image)
-    return result
-
-@app.route('/get_orders', methods=['GET'])
-def get_orders():
-    """Gets all orders from the DB
-    """
-    cur = db.cursor()
-    cur.execute("SELECT * FROM order_data")
-    data = []
-    for row in cur.fetchall():
-        number, name, phone, email, notes, status, order_type, timestamp, num_items = row
-        data.append({
-            'number': number,
-            'name': name,
-            'phone': phone,
-            'email': email,
-            'notes' : notes,
-            'status' : status,
-            'order_type' : order_type,
-            'timestamp': str(timestamp),
-            'num_items': num_items,
-        })
-    return jsonify({'orders': data})
-    #return render_template('home.html', data=data)
 
 @app.route('/get_order_num', methods=['GET'])
 def get_order_num():
+    """Returns the next order number
+    """
     cur = db.cursor()
     cur.execute("SELECT * FROM order_num")
     db.commit()
@@ -130,13 +78,19 @@ def get_order_num():
     db.commit()
     return str(data)
 
+
 @login_manager.unauthorized_handler
 def unauthorized_callback():
+    """If login is required, redirect to login
+    """
     return redirect('/login')
+
 
 @app.route('/')
 @login_required
 def home_page():
+    """Pull all data from DB and render the main page
+    """
     cur = db.cursor()
     cur.execute("SELECT * FROM order_data")
     data = []
@@ -168,6 +122,8 @@ def home_page():
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
+    """Render the login page
+    """
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
@@ -178,7 +134,7 @@ def login():
         for row in cur.fetchall():
             username_db, password_db = row
 
-            if username == username_db and hashlib.sha224(password).hexdigest() == password_db:
+            if username == username_db and hashlib.sha224(password.encode('utf-8')).hexdigest() == password_db:
                 id = 1
                 user = User(id)
                 login_user(user)
@@ -191,6 +147,8 @@ def login():
 @app.route("/logout")
 @login_required
 def logout():
+    """User logout
+    """
     logout_user()
     return redirect('/login')
 
