@@ -172,11 +172,11 @@ def update_order():
 
     cur = db.cursor()
     if toggle:
-        cur.execute("UPDATE order_data SET status='Ready' where order_num=" + order_num)
-        pass
+        cur.execute("UPDATE order_data SET status='Ready' where order_num={}".format(str(order_num)))
+        db.commit()
     else:
-        cur.execute("UPDATE order_data SET status='Picked Up' where order_num=" + order_num)
-        pass
+        cur.execute("UPDATE order_data SET status='Picked Up' where order_num={}".format(str(order_num)))
+        db.commit()
 
     resp = {'status'  : 'Nice'}
     resp = json.dumps(resp)
