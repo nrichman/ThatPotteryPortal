@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">PotteryPortal</string>
+    <string name="itemHint"><i>Item Name</i></string>
+    <string name="signatureHint"><i>Signed</i></string>
 </resources>
