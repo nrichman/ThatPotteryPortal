@@ -476,3 +476,28 @@ footer.sticky-footer {
     width: calc(100% - 55px);
   }
 }
+
+#preview{
+	position:absolute;
+	border:1px solid #ccc;
+	background:#333;
+	padding:5px;
+	display:none;
+  color:#fff;
+  height: 300px;
+  width: 225px;
+}
+
+.btn-primary.focus, .btn-primary:focus, .btn-secondary:focus {
+  -webkit-box-shadow: none!important;
+  box-shadow: none!important;
+}
+
+.focus {
+  -webkit-box-shadow: none!important;
+  box-shadow: none!important;
+}
+
+.active {
+  background-color: green!important;
+}
