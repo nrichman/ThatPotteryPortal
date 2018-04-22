@@ -487,3 +487,17 @@ footer.sticky-footer {
   height: 300px;
   width: 225px;
 }
+
+.btn-primary.focus, .btn-primary:focus, .btn-secondary:focus {
+  -webkit-box-shadow: none!important;
+  box-shadow: none!important;
+}
+
+.focus {
+  -webkit-box-shadow: none!important;
+  box-shadow: none!important;
+}
+
+.active {
+  background-color: green!important;
+}
