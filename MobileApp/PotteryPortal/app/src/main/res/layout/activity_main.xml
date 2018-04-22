@@ -2,9 +2,10 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="com.pottery.christy.potteryportal.MainActivity">
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    tools:context="com.pottery.christy.potteryportal.MainActivity"
+    android:background="@drawable/back2">
 
     <Button
         android:id="@+id/button2"
@@ -12,33 +13,40 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:layout_marginBottom="45dp"
+        android:layout_marginBottom="100dp"
+        android:background="@layout/round_button"
         android:onClick="launchActivity"
-        android:text="Enter New Order" />
+        android:paddingLeft="60dp"
+        android:paddingRight="60dp"
+        android:paddingTop="30dp"
+        android:paddingBottom="30dp"
+        android:text="Enter New Order"
+        android:textSize="30sp"/>
 
     <TextView
         android:id="@+id/editText3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/imageView"
-        android:layout_marginLeft="31dp"
-        android:layout_marginStart="31dp"
-        android:ems="15"
+        android:layout_above="@id/button2"
+        android:layout_marginBottom="340dp"
+        android:layout_centerHorizontal="true"
+        android:ems="25"
+        android:textColor="#19194d"
         android:fontFamily="sans-serif-smallcaps"
         android:text="That Pottery Portal"
-        android:textSize="30sp"
-        android:textStyle="bold" />
+        android:textSize="50sp"
+        android:textStyle="bold"
+        android:gravity="center"/>
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginBottom="60dp"
-        android:layout_marginTop="20dp"
-        app:srcCompat="@drawable/potteryclipart" />
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/editText3"
+        android:layout_marginBottom="40dp"
+        android:layout_marginTop="30dp"
+        android:layout_centerHorizontal="true"
+        app:srcCompat="@drawable/potteryclipart"
+/>
 
 </RelativeLayout>

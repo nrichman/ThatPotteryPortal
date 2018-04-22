@@ -1,34 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:fillViewport="true">
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
 xmlns:app="http://schemas.android.com/apk/res-auto"
 xmlns:tools="http://schemas.android.com/tools"
 android:layout_width="match_parent"
 android:layout_height="match_parent"
-tools:context="com.pottery.christy.potteryportal.PlaceOrder">
+tools:context="com.pottery.christy.potteryportal.PlaceOrder"
+    android:background="@drawable/back2">
 
-    <RelativeLayout
-        android:layout_width="wrap_content"
-        android:id="@+id/InnerLayout"
-        android:layout_height="wrap_content"
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="600dp"
+        android:background="@layout/border_background"
         android:layout_below="@+id/editText2">
 
-    </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:id="@+id/InnerLayout1"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/totalItems">
 
-<Button
-    android:id="@+id/button"
-    android:layout_width="150dp"
-    android:layout_height="60dp"
-    android:layout_alignParentLeft="true"
-    android:layout_alignParentStart="true"
-    android:layout_below="@+id/InnerLayout"
-    android:layout_marginTop="50dp"
-    android:onClick="dispatchTakePictureIntent"
-    android:text="Add Item" />
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:id="@+id/InnerLayout"
+                android:layout_height="wrap_content"
+                >
+            <!--android:layout_below="@+id/editText2"-->
+            </RelativeLayout>
+            <Button
+                android:id="@+id/button"
+                android:layout_width="150dp"
+                android:layout_height="60dp"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/InnerLayout"
+                android:layout_marginTop="70dp"
+                android:layout_marginLeft="10dp"
+                android:onClick="dispatchTakePictureIntent"
+                android:background="@layout/round_button2"
+                android:textSize="24dp"
+                android:text="Add Item" />
+        </RelativeLayout>
+
+    </ScrollView>
+
 <!--android:onClick="dispatchTakePictureIntent"-->
 
 <TextView
@@ -39,8 +54,14 @@ tools:context="com.pottery.christy.potteryportal.PlaceOrder">
     android:layout_alignBottom="@+id/editText"
     android:layout_alignParentLeft="true"
     android:layout_alignParentStart="true"
-    android:text="Customer Name"
-    android:textSize="18sp" />
+    android:layout_marginRight="5dp"
+    android:layout_marginBottom="5px"
+    android:background="@layout/white_background"
+    android:padding="5px"
+    android:paddingRight="10px"
+    android:text="Customer  Name:"
+    android:textSize="28sp"
+    android:textColor="#181919"/>
 
 <EditText
     android:id="@+id/editText"
@@ -48,6 +69,10 @@ tools:context="com.pottery.christy.potteryportal.PlaceOrder">
     android:layout_height="wrap_content"
     android:layout_below="@id/textView"
     android:layout_toRightOf="@id/textView2"
+    android:background="@layout/teal_background"
+    android:textColor="#181919"
+    android:textSize="28sp"
+    android:padding="5px"
     android:layout_marginTop="30dp"
     >
     <requestFocus />
@@ -61,15 +86,24 @@ tools:context="com.pottery.christy.potteryportal.PlaceOrder">
     android:layout_alignBottom="@+id/editText2"
     android:layout_alignParentLeft="true"
     android:layout_alignParentStart="true"
-    android:text="Customer Phone"
-    android:textSize="18sp" />
+    android:padding="5px"
+    android:layout_marginRight="5dp"
+    android:background="@layout/white_background"
+    android:textColor="#181919"
+    android:text="Customer Phone:"
+    android:textSize="28sp" />
 
 <EditText
     android:id="@+id/editText2"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_centerHorizontal="true"
+    android:textSize="28sp"
+    android:background="@layout/teal_background"
+    android:padding="5px"
     android:layout_below="@id/editText"
+    android:textColor="#181919"
+    android:layout_marginTop="10dp"
     android:layout_toRightOf="@id/textView3"
     >
 </EditText>
@@ -82,7 +116,10 @@ tools:context="com.pottery.christy.potteryportal.PlaceOrder">
     android:layout_below="@id/textView3"
     android:layout_centerHorizontal="true"
     android:layout_marginTop="20dp"
-    android:textSize="20sp"
+    android:background="@layout/white_background"
+    android:textColor="#181919"
+    android:textSize="28sp"
+    android:padding="5px"
     />
 <TextView
     android:id="@+id/itemCount"
@@ -91,8 +128,11 @@ tools:context="com.pottery.christy.potteryportal.PlaceOrder">
     android:text="0"
     android:layout_below="@id/textView3"
     android:layout_toRightOf="@id/totalItems"
+    android:background="@layout/white_background"
+    android:textColor="#181919"
     android:layout_marginTop="20dp"
-    android:textSize="20sp"
+    android:padding="5px"
+    android:textSize="28sp"
     />
 
 <Button
@@ -101,19 +141,29 @@ tools:context="com.pottery.christy.potteryportal.PlaceOrder">
     android:layout_height="65dp"
     android:text="Submit"
     android:layout_centerHorizontal="true"
-    android:layout_alignParentBottom="true"
+    android:textSize="24dp"
+    android:textColor="#181919"
+    android:background="@layout/round_button2"
     android:onClick="gotoMainActivity"
     android:layout_marginBottom="25dp"
+    android:layout_alignParentBottom="true"
     />
 
-<TextView
-    android:id="@+id/textView"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_centerHorizontal="true"
-    android:text="Place an Order"
-    android:textSize="30sp"
-    android:layout_marginTop="25dp"/>
+    <!--android:layout_alignParentBottom="true"-->
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="25dp"
+        android:background="@layout/white_background"
+        android:fontFamily="sans-serif"
+        android:paddingBottom="10dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:paddingTop="10dp"
+        android:text="Place an Order"
+        android:textColor="#181919"
+        android:textSize="45sp" />
 
 </RelativeLayout>
-</ScrollView>
