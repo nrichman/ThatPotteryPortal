@@ -9,6 +9,7 @@ import cloudinary
 import cloudinary.uploader
 import hashlib
 import json
+from datetime import datetime
 
 app = Flask(__name__)
 app.secret_key = '04957832904375894370ifdsj84mec4wfpcj43ewi89'
@@ -56,11 +57,11 @@ def insert_order():
     order_num_items = data['num_items']    
     order_items = data['order_items']
 
-    add_word = "INSERT INTO order_data VALUES (%s, %s, %s, %s, %s, %s, %s, NOW(), %s)"
+    add_word = "INSERT INTO order_data VALUES (%s, %s, %s, %s, %s, %s, %s, datetime.now().strftime('%Y-%m-%d %H:%M:%S'), %s)"
     cur.execute(add_word, [order_number, order_name, order_phone, order_email, order_notes, 'Ready', 'None', order_num_items])
     db.commit()
 
-    for item in order_items.split('%'):
+    for item in order_items.split('%')[1:]:
         thing, signature = item.split('^')
         add_item = "INSERT INTO good_items VALUES (%s, %s, %s)"
         cur.execute(add_item, [thing, signature, order_number])

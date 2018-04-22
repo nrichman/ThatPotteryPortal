@@ -181,10 +181,11 @@
                 <tr>
                   <th>Name</th>
                   <th>Phone</th>
-                  <th>Notes</th>
-                  <th>Status</th>
                   <th>Items</th>
-                  <th>Time</th>
+                  <th>Pictures</th>
+                  <th>Status</th>
+                  <th>Date</th>
+                  <th>Notes</th>
                 </tr>
               </thead>
               <tbody style="text-transform:capitalize;font-size:20px">
@@ -192,7 +193,16 @@
                 <tr>
                   <td>{{item['name']}}</td>
                   <td>{{item['phone']}}</td>
-                  <td>{{item['notes']}}</td>
+                  <td>
+                    {% for item2 in item['urls'] %}
+                      <a>test</a>
+                    {% endfor %}
+                  </td>
+                  <td>
+                    {% for item2 in item['urls'] %}
+                      <a href="{{item2}}" class="preview"><img src={{item2}} title="{{item['items'][loop.index0]}}" style="width:50px;height:75px"></a>
+                    {% endfor %}
+                  </td>
                   <td>
                     <div class="btn-group-toggle command" data-toggle="buttons">
                       <label class="btn btn-secondary active">
@@ -200,12 +210,8 @@
                       </label>
                     </div>
                   </td>
-                  <td>
-                    {% for item2 in item['urls'] %}
-                      <a href="{{item2}}" class="preview"><img src={{item2}} title="{{item['items'][loop.index0]}}" style="width:50px;height:75px"></a>
-                    {% endfor %}
-                  </td>
                   <td>{{item['timestamp']}}</td>
+                  <td>{{item['notes']}}</td>
                 </tr>
                 {% endfor %}
               </tbody>
