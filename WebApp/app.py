@@ -57,11 +57,11 @@ def insert_order():
     order_items = data['order_items']
 
     add_word = "INSERT INTO order_data VALUES (%s, %s, %s, %s, %s, %s, %s, NOW(), %s)"
-    cur.execute(add_word, [order_number, order_name, order_phone, order_email, order_notes, 'STATUS', 'None', order_num_items])
+    cur.execute(add_word, [order_number, order_name, order_phone, order_email, order_notes, 'Ready', 'None', order_num_items])
     db.commit()
 
-    for item in order_items.split('%')[1:]:
-        thing, signature = order_items.split('^')
+    for item in order_items.split('%'):
+        thing, signature = item.split('^')
         add_item = "INSERT INTO good_items VALUES (%s, %s, %s)"
         cur.execute(add_item, [thing, signature, order_number])
         db.commit()
