@@ -8,6 +8,7 @@ import MySQLdb
 import cloudinary
 import cloudinary.uploader
 import hashlib
+import json
 
 app = Flask(__name__)
 app.secret_key = '04957832904375894370ifdsj84mec4wfpcj43ewi89'
@@ -63,7 +64,12 @@ def insert_order():
         add_item = "INSERT INTO order_items VALUES (%s, %s)"
         cur.execute(add_item, [order_number, item])
         db.commit()
-    return {'response': 'Nice'}, 200
+    
+    resp = {'status'  : 'Nice'}
+    resp = json.dumps(resp)
+    resp = Response(resp, status=200, mimetype='application/json')
+
+    return resp
 
 
 @app.route('/get_order_num', methods=['GET'])
@@ -143,6 +149,17 @@ def login():
             return redirect('/login')
     else:
         return render_template('login.html')
+
+@app.route("/update_order", methods=['POST'])
+def update_order():
+    """Toggle a user order
+    """
+    toggle = request.form['val']
+
+    if len(toggle) == 0:
+        pass
+    else:
+        pass 
 
 @app.route("/logout")
 @login_required

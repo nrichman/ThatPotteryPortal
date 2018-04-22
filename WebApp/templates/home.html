@@ -16,6 +16,7 @@
   <link href="../static/css/datatables/dataTables.bootstrap4.css" rel="stylesheet">
   <!-- Custom styles for this template-->
   <link href="../static/css/sb-admin.css" rel="stylesheet">
+  <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
 </head>
 
 <body class="fixed-nav sticky-footer bg-dark sidenav-toggled" id="page-top">
@@ -193,7 +194,8 @@
                   <td>{{item['name']}}</td>
                   <td>{{item['phone']}}</td>
                   <td>{{item['notes']}}</td>
-                  <td>{{item['status']}}</td>
+                  <td><input type="checkbox" class="command" checked data-toggle="toggle" data-on="{{item['status']}}" 
+                    data-off="Picked Up" data-onstyle="success" data-offstyle="warning"></td>
                   <td>
                     {% for item2 in item['urls'] %}
                       <a href="{{item2}}" class="preview"><img src={{item2}} title="{{item['items'][loop.index0]}}" style="width:50px;height:75px"></a>
@@ -252,6 +254,41 @@
     <script src="../static/js/sb-admin.js"></script>
     <!-- Custom scripts for this page-->
     <script src="../static/js/sb-admin-datatables.js"></script>
+    <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
+
+    <script>
+      // Only run what comes next *after* the page has loaded
+      addEventListener("DOMContentLoaded", function() {
+        // Grab all of the elements with a class of command
+        // (which all of the buttons we just created have)
+        var commandButtons = document.querySelectorAll(".command");
+        for (var i=0, l=commandButtons.length; i<l; i++) {
+          var checkbox = commandButtons[i];
+
+          checkbox.addEventListener('change', function(event) {
+            console.log("CLICKED");
+
+            var command = clickedButton.value;
+            // Now we need to send the data to our server
+            // without reloading the page - this is the domain of
+            // AJAX (Asynchronous JavaScript And XML)
+            // We will create a new request object
+            // and set up a handler for the response
+            var request = new XMLHttpRequest();
+            request.onload = function() {
+                // We could do more interesting things with the response
+                // or, we could ignore it entirely
+                alert(request.responseText);
+            };
+            // We point the request at the appropriate command
+            request.open("GET", "/" + command, true);
+            // and then we send it off
+            request.send();
+          });
+        }
+      }, true);
+      </script>
+
   </div>
 </body>
 
