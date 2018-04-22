@@ -205,8 +205,8 @@
                   </td>
                   <td>
                     <div class="btn-group-toggle command" data-toggle="buttons">
-                      <label class="btn btn-secondary active">
-                        <input type="checkbox" checked autocomplete="off" value="{{item['name']}}"> {{item['status']}}
+                      <label class="btn btn-secondary active" value="{{item['number']}}">
+                        <input type="checkbox" checked autocomplete="off" > {{item['status']}}
                       </label>
                     </div>
                   </td>
@@ -276,7 +276,13 @@
         }
 
         button.addEventListener("click", function(e) {
-
+          if (e.srcElement.innerText == "Ready"){
+            e.srcElement.innerText = "Picked Up";
+          }
+          else{
+            e.srcElement.innerText = "Ready";
+          }
+          var order_num = e.srcElement.attributes[1].nodeValue;
           var xhr = new XMLHttpRequest();
           var url = "/update_order";
           xhr.open("POST", url, true);
@@ -284,20 +290,10 @@
           xhr.onreadystatechange = function () {
             if (xhr.readyState === 4 && xhr.status === 200) {
               var json = JSON.parse(xhr.responseText);
-              console.log(json.email + ", " + json.password);
             }
           };
-          var data = JSON.stringify({"email": "hey@mail.com", "password": "101010"});
+          var data = JSON.stringify({"order_num": order_num, "toggle": (e.srcElement.innerText == "Ready")});
           xhr.send(data);
-
-
-          if (e.srcElement.innerText == "Ready"){
-            e.srcElement.innerText = "Picked Up";
-          }
-          else{
-            e.srcElement.innerText = "Ready";
-          }
-
           });
         }
       }, true);
