@@ -7,6 +7,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta name="description" content="">
   <meta name="author" content="">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"/>
+  <meta http-equiv="Pragma" content="no-cache"/>
+  <meta http-equiv="Expires" content="0"/>
   <title>Portal</title>
   <!-- Bootstrap core CSS-->
   <link href="../static/css/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -181,10 +184,11 @@
                 <tr>
                   <th>Name</th>
                   <th>Phone</th>
-                  <th>Notes</th>
-                  <th>Status</th>
                   <th>Items</th>
-                  <th>Time</th>
+                  <th>Pictures</th>
+                  <th>Status</th>
+                  <th>Date</th>
+                  <th>Notes</th>
                 </tr>
               </thead>
               <tbody style="text-transform:capitalize;font-size:20px">
@@ -192,20 +196,25 @@
                 <tr>
                   <td>{{item['name']}}</td>
                   <td>{{item['phone']}}</td>
-                  <td>{{item['notes']}}</td>
                   <td>
-                    <div class="btn-group-toggle command" data-toggle="buttons">
-                      <label class="btn btn-secondary active">
-                        <input type="checkbox" checked autocomplete="off" value="{{item['name']}}"> {{item['status']}}
-                      </label>
-                    </div>
+                    {% for item2 in item['urls'] %}
+                      <a>test</a>
+                    {% endfor %}
                   </td>
                   <td>
                     {% for item2 in item['urls'] %}
                       <a href="{{item2}}" class="preview"><img src={{item2}} title="{{item['items'][loop.index0]}}" style="width:50px;height:75px"></a>
                     {% endfor %}
                   </td>
+                  <td>
+                    <div class="btn-group-toggle command" data-toggle="buttons">
+                      <label class="btn btn-secondary active" value="{{item['number']}}">
+                        <input type="checkbox" checked autocomplete="off" > {{item['status']}}
+                      </label>
+                    </div>
+                  </td>
                   <td>{{item['timestamp']}}</td>
+                  <td>{{item['notes']}}</td>
                 </tr>
                 {% endfor %}
               </tbody>
@@ -270,7 +279,13 @@
         }
 
         button.addEventListener("click", function(e) {
-
+          if (e.srcElement.innerText == "Ready"){
+            e.srcElement.innerText = "Picked Up";
+          }
+          else{
+            e.srcElement.innerText = "Ready";
+          }
+          var order_num = e.srcElement.attributes[1].nodeValue;
           var xhr = new XMLHttpRequest();
           var url = "/update_order";
           xhr.open("POST", url, true);
@@ -278,20 +293,10 @@
           xhr.onreadystatechange = function () {
             if (xhr.readyState === 4 && xhr.status === 200) {
               var json = JSON.parse(xhr.responseText);
-              console.log(json.email + ", " + json.password);
             }
           };
-          var data = JSON.stringify({"email": "hey@mail.com", "password": "101010"});
+          var data = JSON.stringify({"order_num": order_num, "toggle": (e.srcElement.innerText == "Ready")});
           xhr.send(data);
-
-
-          if (e.srcElement.innerText == "Ready"){
-            e.srcElement.innerText = "Picked Up";
-          }
-          else{
-            e.srcElement.innerText = "Ready";
-          }
-
           });
         }
       }, true);

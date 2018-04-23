@@ -9,6 +9,7 @@ import cloudinary
 import cloudinary.uploader
 import hashlib
 import json
+from datetime import datetime
 
 app = Flask(__name__)
 app.secret_key = '04957832904375894370ifdsj84mec4wfpcj43ewi89'
@@ -56,13 +57,16 @@ def insert_order():
     order_num_items = data['num_items']    
     order_items = data['order_items']
 
-    add_word = "INSERT INTO order_data VALUES (%s, %s, %s, %s, %s, %s, %s, NOW(), %s)"
-    cur.execute(add_word, [order_number, order_name, order_phone, order_email, order_notes, 'STATUS', 'None', order_num_items])
+    date_now = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+
+    add_word = "INSERT INTO order_data VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)"
+    cur.execute(add_word, [order_number, order_name, order_phone, order_email, order_notes, 'Ready', 'None', date_now, order_num_items])
     db.commit()
 
-    for item in order_items.split(',')[1:]:
-        add_item = "INSERT INTO order_items VALUES (%s, %s)"
-        cur.execute(add_item, [order_number, item])
+    for item in order_items.split('+')[1:]:
+        thing, signature = item.split('=')
+        add_item = "INSERT INTO good_items VALUES (%s, %s, %s)"
+        cur.execute(add_item, [thing, signature, order_number])
         db.commit()
     
     resp = {'status'  : 'Nice'}
@@ -149,16 +153,35 @@ def login():
     else:
         return render_template('login.html')
 
-@app.route("/update_order", methods=['POST'])
+@app.route("/update_order", methods=['POST', 'OPTIONS'])
 def update_order():
     """Toggle a user order
     """
-    toggle = request.form['val']
+    if request.method == 'OPTIONS':
+        headers = {
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Methods': 'POST, GET, OPTIONS',
+            'Access-Control-Max-Age': 1000,
+            'Access-Control-Allow-Headers': 'origin, x-csrftoken, content-type, accept',
+        }
+        return '', 200, headers
+    data = json.loads(request.data)
 
-    if len(toggle) == 0:
-        pass
+    toggle = data['toggle']
+    order_num = data['order_num']
+
+    cur = db.cursor()
+    if toggle:
+        cur.execute("UPDATE order_data SET status='Ready' where order_num={}".format(str(order_num)))
+        db.commit()
     else:
-        pass 
+        cur.execute("UPDATE order_data SET status='Picked Up' where order_num={}".format(str(order_num)))
+        db.commit()
+
+    resp = {'status'  : 'Nice'}
+    resp = json.dumps(resp)
+    resp = Response(resp, status=200, mimetype='application/json')
+    return resp
 
 @app.route("/logout")
 @login_required
