@@ -383,7 +383,7 @@ public class PlaceOrder extends AppCompatActivity {
 
         String allItemNames = "";
                 for (int i = 0; i < allEds.size(); i++) {
-            allItemNames = allItemNames + "," + allEds.get(i).getText().toString() + ":" + allsignatures.get(i).getText().toString();
+            allItemNames = allItemNames + "+" + allEds.get(i).getText().toString() + "=" + allsignatures.get(i).getText().toString();
         }
 
         RequestQueue queue = Volley.newRequestQueue(this);
@@ -393,7 +393,7 @@ public class PlaceOrder extends AppCompatActivity {
         postParam.put("name", mEdit.getText().toString());
         postParam.put("phone", mEdit2.getText().toString());
         postParam.put("email", "christytest@test.com");
-        postParam.put("notes", "Test Notes here");
+        postParam.put("notes", "Test Notes");
         postParam.put("num_items", Integer.toString(numberOfItems));
         postParam.put("order_items", allItemNames);
 
