@@ -171,10 +171,52 @@ def login():
 
 @app.route("/charts")
 def chart_page():
+    cur = db.cursor()
+    cur.execute("SELECT item FROM good_items")
+    db.commit()
+
+    # Generate most popular item data
+    item_list = []
+    for row in cur.fetchall():
+        item_list.append(row[0].strip())
+    item_list = sorted([(item_list.count(x),x) for x in set(item_list)], reverse=True)
+    bar_values = [x[0] for x in item_list[:8]]
+    bar_labels = [x[1] for x in item_list[:8]]
+
+    # Generate days of week data 
+    cur.execute("SELECT timestamp, num_items FROM order_data")
+    db.commit()
+
+
+    day_values = [0] * 7
+    day_labels = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
+
+    date_map = {}
+    for i in range(7,0,-1):
+        date_map.setdefault((datetime.today() - timedelta(days=i)).strftime('%b %d'), 0)
+    for row in cur.fetchall():
+        timestamp, num_items = row
+        if timestamp.strftime('%b %d') in date_map:
+            date_map[timestamp.strftime('%b %d')] += 1
+
+        day_values[day_labels.index(timestamp.strftime('%a'))] += 1
+
+    max_weekly_val = 0
+    week_values = []
+    week_labels = sorted(date_map.iterkeys())
+
+    for label in week_labels:
+        if date_map[label] > max_weekly_val:
+            max_weekly_val = date_map[label]
+        week_values.append(date_map[label])
+
+
     legend = 'Monthly Data'
     labels = ["January", "February", "March", "April", "May", "June", "July", "August"]
     values = [10000, 9000, 8000, 7000, 6000, 4000, 7000, 8000]
-    return render_template('charts.html', values=values, labels=labels, legend=legend)
+    return render_template('charts.html', week_labels=week_labels, week_values=week_values, 
+                            max_weekly_val=max_weekly_val, bar_labels=bar_labels, bar_values=bar_values,
+                            day_labels=day_labels, day_values=day_values)
 
 @app.route("/update_order", methods=['POST', 'OPTIONS'])
 def update_order():
