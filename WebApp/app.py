@@ -9,7 +9,7 @@ import cloudinary
 import cloudinary.uploader
 import hashlib
 import json
-from datetime import datetime
+from datetime import datetime, timedelta
 
 app = Flask(__name__)
 app.secret_key = '04957832904375894370ifdsj84mec4wfpcj43ewi89'
@@ -57,7 +57,7 @@ def insert_order():
     order_num_items = data['num_items']    
     order_items = data['order_items']
 
-    date_now = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    date_now = (datetime.now() - timedelta(hours=5)).strftime('%Y-%m-%d %H:%M:%S')
 
     add_word = "INSERT INTO order_data VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)"
     cur.execute(add_word, [order_number, order_name, order_phone, order_email, order_notes, 'Ready', 'None', date_now, order_num_items])
