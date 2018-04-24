@@ -95,16 +95,24 @@ def unauthorized_callback():
     return redirect('/login')
 
 
-@app.route('/')
+@app.route('/', methods=['GET','POST'])
 @login_required
 def home_page():
     """Pull all data from DB and render the main page
     """
     cur = db.cursor()
-    cur.execute("SELECT * FROM order_data")
     data = []
+
+    if request.method == "GET":
+        cur.execute("SELECT * FROM order_data where status=\'Ready\'")
+        db.commit()
+    else:
+        cur.execute("SELECT * FROM order_data")
+        db.commit()
+
     for row in cur.fetchall():
         number, name, phone, email, notes, status, order_type, timestamp, num_items = row
+
         data.append({
             'number': number,
             'name': name,
@@ -125,12 +133,16 @@ def home_page():
             data[-1]['urls'].append('http://res.cloudinary.com/du0tdfvpl/order_' + str(number) + '_' + str(num))
         cur2 = db.cursor()
         cur2.execute('SELECT * FROM good_items WHERE url=' + number)
+        db.commit()
         for row in cur2.fetchall():
             item, sig, num = row
-            print item + ' ' + sig + ' ' + num
             data[-1]['items'].append(item)
             data[-1]['signatures'].append(sig)
-    return render_template('home.html', data=data)
+
+    if request.method == 'POST':
+        return render_template('home.html', data=data, toggle=True)
+
+    return render_template('home.html', data=data, toggle=False)
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -142,6 +154,7 @@ def login():
 
         cur = db.cursor()
         cur.execute("SELECT * FROM good_users")
+        db.commit()
         data = []
         for row in cur.fetchall():
             username_db, password_db = row
@@ -155,6 +168,10 @@ def login():
             return redirect('/login')
     else:
         return render_template('login.html')
+
+@app.route("/charts")
+def chart_page():
+    return render_template('charts.html')
 
 @app.route("/update_order", methods=['POST', 'OPTIONS'])
 def update_order():
