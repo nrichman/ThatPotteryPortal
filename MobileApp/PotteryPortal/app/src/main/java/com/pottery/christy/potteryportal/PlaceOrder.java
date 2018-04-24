@@ -2,6 +2,7 @@ package com.pottery.christy.potteryportal;
 
 import com.cloudinary.android.MediaManager;
 
+import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.util.TypedValue;
 import android.content.Context;
@@ -32,6 +33,8 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
+
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.util.ArrayList;
@@ -63,6 +66,7 @@ public class PlaceOrder extends AppCompatActivity {
     int itemsAddedId = 0;
     int textAddedId = 300;
     int suggestionsAddedId = 500;
+    int suggestionsAddedId2 = 600;
     int signaturesAddedId = 700;
     List<EditText> allEds = new ArrayList<EditText>();
     List<Bitmap> allPics = new ArrayList<Bitmap>();
@@ -76,11 +80,13 @@ public class PlaceOrder extends AppCompatActivity {
     {
         Bitmap bMap;
         TextView text;
+        TextView text2;
 
-        TensorObject(Bitmap bMap, TextView text)
+        TensorObject(Bitmap bMap, TextView text, TextView text2)
         {
             this.bMap = bMap;
             this.text = text;
+            this.text2 = text2;
         }
 
         @Override
@@ -172,6 +178,11 @@ public class PlaceOrder extends AppCompatActivity {
                                     @Override
                                     public void run() {
                                         PlaceOrder order = new PlaceOrder();
+                                        if (tensorFlowResults.size() > 1) {
+                                            String suggested2 = tensorFlowResults.get(1).getTitle();
+                                            tObject.text2.setText(suggested2);
+                                            tObject.text2.setBackgroundResource(R.drawable.suggestion_background);
+                                        }
                                         tObject.text.setText(suggested);
                                     }
                                 });
@@ -189,6 +200,7 @@ public class PlaceOrder extends AppCompatActivity {
         itemsAddedId++;
         textAddedId++;
         suggestionsAddedId++;
+        suggestionsAddedId2++;
         signaturesAddedId++;
 
         // ADD IMAGE
@@ -276,7 +288,31 @@ public class PlaceOrder extends AppCompatActivity {
         suggestion.setTextColor(getResources().getColor(R.color.colorText));
         suggestion.setLayoutParams(lprams2);
         innerLayout.addView(suggestion);
-        tensorQueue.add(new TensorObject(imageBitmap, suggestion));
+
+        // SUGGESTION 2
+
+        RelativeLayout.LayoutParams lprams3 = new RelativeLayout.LayoutParams(
+                RelativeLayout.LayoutParams.WRAP_CONTENT,
+                RelativeLayout.LayoutParams.WRAP_CONTENT);
+        lprams3.addRule(RelativeLayout.ABOVE, suggestionsAddedId);
+        lprams3.addRule(RelativeLayout.ALIGN_LEFT, suggestionsAddedId);
+        lprams3.setMargins(5,0,5,5);
+        TextView suggestion2 = new TextView(this);
+        suggestion2.setId(suggestionsAddedId2);
+        suggestion2.setTextSize(40);
+        suggestion2.setTextSize(TypedValue.COMPLEX_UNIT_PX,18);
+        suggestion2.setWidth(150);
+        suggestion2.setHeight(75);
+        suggestion2.setGravity(Gravity.CENTER);
+        suggestion2.setClickable(true);
+        suggestion2.setOnClickListener(btnclick);
+        suggestion2.setBackgroundColor(Color.TRANSPARENT);
+        suggestion2.setTextColor(getResources().getColor(R.color.colorText));
+        suggestion2.setLayoutParams(lprams3);
+        innerLayout.addView(suggestion2);
+
+        // END SUGGESTION 2
+        tensorQueue.add(new TensorObject(imageBitmap, suggestion, suggestion2));
     }
 
         View.OnClickListener btnclick = new View.OnClickListener() {
@@ -286,6 +322,9 @@ public class PlaceOrder extends AppCompatActivity {
             Log.d("click", Integer.toString(view.getId()) );
             int idToChange = view.getId();
             idToChange = idToChange - 200;
+            if (idToChange > 400) {
+                idToChange = idToChange - 100;
+            }
 
             EditText et = findViewById(idToChange);
 
