@@ -119,14 +119,17 @@ def home_page():
 
         data[-1].setdefault('urls', [])
         data[-1].setdefault('items', [])
+        data[-1].setdefault('signatures', [])
 
         for num in range(1,int(num_items)+1):
             data[-1]['urls'].append('http://res.cloudinary.com/du0tdfvpl/order_' + str(number) + '_' + str(num))
         cur2 = db.cursor()
-        cur2.execute('SELECT * FROM order_items WHERE order_num=' + number)
+        cur2.execute('SELECT * FROM good_items WHERE url=' + number)
         for row in cur2.fetchall():
-            a, b = row
-            data[-1]['items'].append(b)
+            item, sig, num = row
+            print item + ' ' + sig + ' ' + num
+            data[-1]['items'].append(item)
+            data[-1]['signatures'].append(sig)
     return render_template('home.html', data=data)
 
 @app.route('/login', methods=['GET', 'POST'])
