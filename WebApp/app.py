@@ -105,10 +105,8 @@ def home_page():
 
     if request.method == "GET":
         cur.execute("SELECT * FROM order_data where status=\'Ready\'")
-        db.commit()
     else:
         cur.execute("SELECT * FROM order_data")
-        db.commit()
 
     for row in cur.fetchall():
         number, name, phone, email, notes, status, order_type, timestamp, num_items = row
@@ -121,7 +119,7 @@ def home_page():
             'notes' : notes,
             'status' : status,
             'order_type' : order_type,
-            'timestamp': str(timestamp),
+            'timestamp': str(timestamp - timedelta(hours=5)),
             'num_items': num_items,
         })
 
