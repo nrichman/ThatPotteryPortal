@@ -47,6 +47,8 @@ import java.util.Queue;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
+// PlaceOrder class handles all of the logic for the customer adding in the order
+// information to be submitted to the web applcation.
 public class PlaceOrder extends AppCompatActivity {
 
     private static final int INPUT_SIZE = 299;
@@ -144,11 +146,11 @@ public class PlaceOrder extends AppCompatActivity {
             @Override
             public void run() {
                 classifier.close();
-                Log.d("ON DESTORY", "destroyed");
             }
         });
     }
 
+    // Separate thread for tensorflow to run in the background
     private void runThread() {
         new Thread() {
             public void run () {
@@ -196,6 +198,10 @@ public class PlaceOrder extends AppCompatActivity {
         }.start();
     }
 
+    // Adding a new Item
+    // This will create a thumbnail of the item picture that was just taken
+    // and will create the input sections for the new item including the item name
+    // item signature, and the buttons for suggestions
     public void addNewElement(Bitmap imageBitmap) {
         itemsAddedId++;
         textAddedId++;
@@ -260,7 +266,7 @@ public class PlaceOrder extends AppCompatActivity {
         signature.setBackgroundResource(R.drawable.teal_background);
         innerLayout.addView(signature);
 
-        // suggestion
+        // ADD SUGGESTION
         ImageView potteryPic = (ImageView) findViewById(itemsAddedId);
         potteryPic.setImageBitmap(imageBitmap);
 
@@ -289,7 +295,7 @@ public class PlaceOrder extends AppCompatActivity {
         suggestion.setLayoutParams(lprams2);
         innerLayout.addView(suggestion);
 
-        // SUGGESTION 2
+        // ADD SUGGESTION TWO
 
         RelativeLayout.LayoutParams lprams3 = new RelativeLayout.LayoutParams(
                 RelativeLayout.LayoutParams.WRAP_CONTENT,
@@ -311,12 +317,13 @@ public class PlaceOrder extends AppCompatActivity {
         suggestion2.setLayoutParams(lprams3);
         innerLayout.addView(suggestion2);
 
-        // END SUGGESTION 2
+        // ADD TO TENSORFLOW QUEUE
         tensorQueue.add(new TensorObject(imageBitmap, suggestion, suggestion2));
     }
 
         View.OnClickListener btnclick = new View.OnClickListener() {
-
+        // Method called when user clicks a suggestion, this will
+            // change the item name input to the name suggested
         @Override
         public void onClick(View view) {
             Log.d("click", Integer.toString(view.getId()) );
@@ -337,6 +344,7 @@ public class PlaceOrder extends AppCompatActivity {
         }
     };
 
+    // This handles the user taking pictures of items
     public void dispatchTakePictureIntent(View v) {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
@@ -344,6 +352,8 @@ public class PlaceOrder extends AppCompatActivity {
         }
     }
 
+    // This method creates a bitmap of the item image that was just taken
+    // by the user, it then calls addNewElement to update the view
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
@@ -366,6 +376,10 @@ public class PlaceOrder extends AppCompatActivity {
         return cursor.getString(idx);
     }
 
+    // This method is the submit order functionality, it will make a request
+    // to the python script to get an available order number, upload the images
+    // to cloudinary, then send the final order information to the second python
+    // script so it will be available to the web application.
     public void gotoMainActivity(View v) {
 
         submitButton.setClickable(false);
@@ -404,12 +418,8 @@ public class PlaceOrder extends AppCompatActivity {
             File finalFile = new File(getRealPathFromURI(tempUri));
             String createdUrl = "order_" + orderNumber + "_" + Integer.toString(i+1);
             String requestId = MediaManager.get().upload(finalFile.getPath()).option("public_id", createdUrl).dispatch();
-            Log.d("URL CREATED:", requestId);
-            // END UPLOAD
         }
 
-
-        // SEND URLS TO PYTHON SCRIPT
 
         // SEND ORDER DATA TO PYTHON SCRIPT
 
@@ -436,20 +446,11 @@ public class PlaceOrder extends AppCompatActivity {
         postParam.put("num_items", Integer.toString(numberOfItems));
         postParam.put("order_items", allItemNames);
 
-        Log.d("ORDER_NUM",orderNumber );
-        Log.d("name",mEdit.getText().toString() );
-        Log.d("phone",mEdit2.getText().toString() );
-        Log.d("email","christytest@test.com" );
-        Log.d("notes","Test Notes here" );
-        Log.d("num_items",Integer.toString(numberOfItems) );
-        Log.d("order_items",allItemNames );
-
         JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.POST,
                 "http://that-pottery-portal.herokuapp.com/insert_order", new JSONObject(postParam),
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        Log.d("ORDER GOOD RESPONSE:", response.toString());
                         Toast.makeText(getApplicationContext(),"FINISHED UPLOAD",Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                         PlaceOrder.this.finish();
@@ -458,17 +459,14 @@ public class PlaceOrder extends AppCompatActivity {
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.d("ORDER ERROR RESPONSE:", "Error: " + error.getMessage());
-                Toast.makeText(getApplicationContext(),"FINISHED UPLOAD",Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(),"ERROR UPLOADING",Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
 
                 PlaceOrder.this.finish();
                 startActivity(intent);
             }
         }) {
-            /**
-             * Passing some request headers
-             * */
+
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 HashMap<String, String> headers = new HashMap<String, String>();
